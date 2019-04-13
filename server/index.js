@@ -2,6 +2,7 @@ const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const session = require("express-session");
 const app = express();
 const PORT = 8080;
 
@@ -12,6 +13,14 @@ app.use(morgan("dev"));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "a wildly insecure secret",
+    resave: false,
+    saveUninitialized: false
+  })
+);
 
 app.use(express.static(path.join(__dirname, "/public")));
 
